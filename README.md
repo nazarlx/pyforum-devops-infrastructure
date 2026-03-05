@@ -1,237 +1,219 @@
-<a href="https://softserve.academy/"><img src=".github/logo.jpg" title="SoftServe IT Academy" alt="SoftServe IT Academy"></a>
+# PyForum DevOps Infrastructure
 
-# Repository Title Goes Here
+Production-like DevOps infrastructure for the **PyForum Django application** using AWS, Terraform, Docker, GitHub Actions and a full monitoring stack.
 
-> This project aims to facilitate the collaboration between startups and investors, providing a platform for them to discover and connect with each other. It serves as a business-to-business solution, enabling the exchange of information between startups and potential investors.
-
->  Business-to-business solution B2B
-
-> Django backend serves, Custom Administrative Panel
-
-**Badges will go here**
-
-- build status
-- coverage
-- issues (waffle.io maybe)
-- devDependencies
-- npm package
-- slack
-- downloads
-- gitter chat
-- license
-- etc.
-
-[![Pending Pull-Requests](https://img.shields.io/github/issues-pr/ita-social-projects/Forum-Sandbox?style=flat-square)](https://github.com/mentorchita/PyForum/pulls)
-[![License](http://img.shields.io/:license-mit-blue.svg?style=flat-square)](http://badges.mit-license.org)
-
-- For more on these wonderful  badges, refer to <a href="#" target="_blank">#</a>.
+This project demonstrates how to deploy a containerized web application using Infrastructure as Code and automated CI/CD pipelines.
 
 ---
 
-## Table of Contents (Optional)
+# Architecture Overview
 
-> If your `README` has a lot of info, section headers might be nice.
+The application is containerized with Docker and deployed on AWS using ECS.  
+Infrastructure is managed using Terraform and application delivery is automated via GitHub Actions.
 
-- [Repository Title Goes Here](#repository-title-goes-here)
-  - [Table of Contents (Optional)](#table-of-contents-optional)
-  - [Installation](#installation)
-    - [Required to install](#required-to-install)
-    - [Environment](#environment)
-    - [Clone](#clone)
-    - [Setup](#setup)
-    - [How to run local](#how-to-run-local)
-  - [Usage](#usage)
-    - [How to work with swagger UI](#how-to-work-with-swagger-ui)
-    - [How to run tests](#how-to-run-tests)
-    - [How to Check](#how-to-check)
-  - [Documentation](#documentation)
-  - [Contributing](#contributing)
-    - [Git flow](#git-flow)
-      - [Step 1](#step-1)
-      - [Step 2](#step-2)
-      - [Step 3](#step-3)
-    - [Issue flow](#issue-flow)
-   - [FAQ](#faq)
-  - [Support](#support)
-  - [License](#license)
+Architecture flow:
+
+GitHub → CI/CD → Amazon ECR → ECS Cluster → Nginx → Django App → PostgreSQL (RDS)
+
+Monitoring stack includes Prometheus, Grafana, Loki and Node Exporter.
 
 ---
 
-## Installation
+# Tech Stack
 
-- All the `code` required to get started
-- Images of what it should look like
+### Infrastructure
+- AWS ECS
+- AWS ECR
+- AWS RDS
+- AWS VPC
+- Terraform (Infrastructure as Code)
 
-### Required to install
-* Python 3.9 or later
-* PostgreSQL 14 or later
-* Django 4.2.3
-* NodeJS Frontend
+### Application
+- Python
+- Django
+- Gunicorn
+- Nginx
 
+### Containers
+- Docker
+- Docker Compose
 
-### Environment
-environmental variables
-```properties
-#db details
-SECRET_KEY= key ...
-PG_DB= forum
-PG_USER= postgres
-PG_PASSWORD= postgres
-DB_HOST= localhost
-DB_PORT= 5432
-DB_PORT_OUT= 55432 # Check if there is a conflict with the setup on port 55432
+### CI/CD
+- GitHub Actions
 
-#pgadmin user
-PGADMIN_EMAIL: admin@admin.com
-PGADMIN_PASSWORD: key ...
-
-#SMTP
-EMAIL_BACKEND=django.core.mail.backends.smtp.EmailBackend
-EMAIL_HOST= someuser@gmail.com
-EMAIL_PORT= 587
-EMAIL_USE_TLS= 1
-EMAIL_HOST_USER= test@test.com
-EMAIL_HOST_PASSWORD= test-password
-
-#origin hostnames allowed to make cross-site HTTP requests
-CORS_ORIGIN_WHITELIST=
-```
-
-### Setup
-
-- If you want more syntax highlighting, format your code like this:
-- Localhost
-
-> update and install this package first
-
-```shell
-$ pip install -r requirements.txt
-```
-
-> now install npm and bower packages
-
-```shell
-$ sudo apt update
-$ sudo apt install nodejs
-$ sudo apt install npm
-
-```
-
-In your settings.py, there is a list called ALLOWED_HOSTS. You need to add the IP address you see in the error to that list:
-ALLOWED_HOSTS = ['XX.XX.XX.XX']
-Note: only add the IP address, and not the port (e.g., 127.0.0.1 and not 127.0.0.1:8000)
-For development, you can use the * wildcard to allow all hosts in settings.py:
-ALLOWED_HOSTS = ['*']
-Important
-Modify this configuration when you deploy your app in production environment.
-
-### How to run local
-- Setup .env
-> Setup .env
-``` shell
-SECRET_KEY= 'key ...'
-PG_DB= forum
-PG_USER= postgres
-PG_PASSWORD= postgres
-DB_HOST= localhost
-DB_PORT= 5432
-DB_PORT_OUT= 5432 # Check if there is a conflict with the setup on port 55432
-
-#pgadmin user
-PGADMIN_EMAIL: admin@admin.com
-PGADMIN_PASSWORD: key ...
-
-#SMTP
-EMAIL_BACKEND=django.core.mail.backends.smtp.EmailBackend
-EMAIL_HOST= someuser@gmail.com
-EMAIL_PORT= 587
-EMAIL_USE_TLS= 1
-EMAIL_HOST_USER= test@test.com
-EMAIL_HOST_PASSWORD= test-password
-
-#origin hostnames allowed to make cross-site HTTP requests
-CORS_ORIGIN_WHITELIST=
-```
-- User, run the local server on port localhost:8000
-``` shell
-$ psql -U postgres -d forum < dump_forum.sql
-$ python manage.py runserver
-or 
-$ python manage.py makemigrations
-$ python manage.py migrate
-$ python manage.py createsuperuser (custom_admin_panel_user)
-$ python manage.py runserver
-```
-
-## Usage
-### How to work with swagger UI
-### How to run tests
-- User, run test:
-```shell
-$ python manage.py test
-```
-
-### How to Check
-
-You will see the following view after running the program using the specified path on port 8000:
-![main page](.github/main_page.png)
-
-When you try to log in, the following screen will appear:
-![login screen](.github/login_page.png)
-
-After logging in, the following screen will appear:
-![logging](.github/logged_page.png)
-
-Default user admin@admin.com  password: Password_1
-
-## Documentation
-- 🔃 Documentation <a href="https://github.com/mentorchita/PyForum/wiki" target="_blank">Forum-Sandbox/wiki</a>.
+### Monitoring & Logging
+- Prometheus
+- Grafana
+- Loki
+- Promtail
+- Node Exporter
+- cAdvisor
 
 ---
 
-## Contributing
+# Project Structure
+.
+├── admin
+├── administration
+├── authentication
+├── css
+├── forum_sandbox
+├── front_end
+├── infra/aws
+├── logs
+├── media
+├── monitoring
+├── nginx
+├── profiles
+├── rest_framework
+├── static
+├── templates
+├── terraform
+├── docker-compose.dev.yml
+├── Dockerfile
+├── manage.py
+├── requirements.txt
 
-### Git flow
-> To get started...
-#### Step 1
-
-- **Option 1**
-    - 🍴 Fork this repo!
-
-- **Option 2**
-    - 👯 Clone this repo to your local machine
-
-#### Step 2
-
-- **HACK AWAY!** 🔨🔨🔨
-
-#### Step 3
-
-- 🔃 Create a new pull request
-### Issue flow
-
----
-
-## FAQ
-
-- **How do I do *specifically* so and so?**
-    - No problem! Just do this.
 
 ---
 
-## Support
+# Infrastructure
 
-Reach out to me at one of the following places!
+Infrastructure is provisioned using **Terraform**.
 
-- Website at <a href="#" target="_blank">`#`</a>
-- Facebook at <a href="#" target="_blank">`#`</a>
-- Insert more social links here.
+Resources created:
 
----
+- VPC
+- Subnets
+- Security Groups
+- ECS Cluster
+- ECS Task Definition
+- Load Balancer
+- RDS PostgreSQL
+- Monitoring services
 
-## License
+Deploy infrastructure:
 
-[![License](http://img.shields.io/:license-mit-blue.svg?style=flat-square)](http://badges.mit-license.org)
+```bash
+terraform init
+terraform plan
+terraform apply
 
-- **[MIT license](http://opensource.org/licenses/mit-license.php)**
-- Copyright 2024 © <a href="https://softserve.academy/" target="_blank"> SoftServe | Academy</a>.
+
+CI/CD Pipeline
+
+CI/CD is implemented using GitHub Actions.
+
+Pipeline stages:
+
+1️⃣ Build Docker image
+2️⃣ Run tests (optional)
+3️⃣ Push image to Amazon ECR
+4️⃣ Deploy to ECS
+
+Pipeline files:
+.github/workflows/ci.yml
+.github/workflows/cd.yml
+
+
+Running Locally
+
+Run the application locally using Docker Compose.
+docker-compose -f docker-compose.dev.yml up --build
+
+Application will be available at:
+http://localhost:8000
+
+
+
+
+Monitoring Stack
+
+The project includes a complete monitoring stack.
+
+Components:
+	•	Prometheus – metrics collection
+	•	Grafana – dashboards and visualization
+	•	Loki – log aggregation
+	•	Promtail – log shipping
+	•	Node Exporter – host metrics
+	•	cAdvisor – container metrics
+
+⸻
+
+Logging
+
+Centralized logging is implemented using:
+	•	Loki
+	•	Promtail
+
+Logs are collected from:
+	•	Docker containers
+	•	Application logs
+	•	System logs
+
+⸻
+
+Environment Variables
+
+Create .env file based on example:
+cp .env.example .env
+
+
+
+Example variables:
+DATABASE_URL=
+SECRET_KEY=
+DEBUG=
+ALLOWED_HOSTS=
+
+
+
+
+Security
+
+Best practices used:
+	•	Environment variables for secrets
+	•	Security groups for network isolation
+	•	Private subnets for internal services
+	•	Reverse proxy via Nginx
+
+⸻
+
+DevOps Features
+
+✔ Infrastructure as Code
+✔ Containerized application
+✔ CI/CD automation
+✔ Cloud deployment
+✔ Monitoring and logging
+✔ Production-ready architecture
+
+⸻
+
+Future Improvements
+
+Possible improvements:
+	•	Kubernetes deployment
+	•	Auto-scaling ECS services
+	•	Blue/Green deployments
+	•	Terraform remote state (S3 + DynamoDB)
+	•	Secret management with AWS Secrets Manager
+
+⸻
+
+Author
+
+Nazar Lysyk
+
+GitHub:
+https://github.com/nazarlx
+
+LinkedIn:
+www.linkedin.com/in/nazar-lysyk
+
+
+
+
+
+
