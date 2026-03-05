@@ -51,7 +51,9 @@ Monitoring stack includes Prometheus, Grafana, Loki and Node Exporter.
 
 ---
 
-# Project Structure
+## Project Structure
+
+```
 .
 ├── admin
 ├── administration
@@ -72,8 +74,8 @@ Monitoring stack includes Prometheus, Grafana, Loki and Node Exporter.
 ├── docker-compose.dev.yml
 ├── Dockerfile
 ├── manage.py
-├── requirements.txt
-
+└── requirements.txt
+```
 
 ---
 
