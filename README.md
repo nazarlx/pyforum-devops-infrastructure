@@ -207,12 +207,17 @@ Possible improvements:
 Author
 
 Nazar Lysyk
+DevOps Engineer
 
 GitHub:
 https://github.com/nazarlx
 
 LinkedIn:
 www.linkedin.com/in/nazar-lysyk
+
+# Note
+
+This project was initially created during the SoftServe DevOps training program and later improved as a personal DevOps portfolio project.
 
 
 
